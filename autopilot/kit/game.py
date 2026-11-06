@@ -454,7 +454,8 @@ class Game:
             args["map"] = map
         if players is not None:
             args["players"] = int(players)
-        self.request("session", args, timeout=60 + 40 * max(0, int(players or 1) - 1))
+        # (Unity's is a Stop and a Play; its plugin gives up after 90 s. Each further player is another client to start)
+        self.request("session", args, timeout=120 + 40 * max(0, int(players or 1) - 1))
         self.restarts += 1
         self._ctx = None
         for body in self._bodies.values():
